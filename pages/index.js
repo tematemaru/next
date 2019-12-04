@@ -1,10 +1,10 @@
-import Link from 'next/link';
+import Header from '../components/Header';
+import css from '../styles/styles.scss';
+
 
 const Index = () => (
-  <div>
-    <Link href="/about">
-      <a>About Page</a>
-    </Link>
+  <div className={css.root}>
+    <Header />
     <p>Hello Next.js</p>
   </div>
 );
