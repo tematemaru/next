@@ -132,10 +132,10 @@ function (_React$PureComponent) {
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_6__["default"])(Object(_babel_runtime_corejs2_helpers_esm_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__["default"])(_this), "prepareTextTexture", function () {
       var canvas = document.createElement('canvas');
-      canvas.width = 100000;
-      canvas.height = 100000;
+      canvas.width = window.innerWidth * 2;
+      canvas.height = window.innerHeight * 2;
       var ctx = canvas.getContext('2d');
-      ctx.font = '1024px serif';
+      ctx.font = '170px serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#ffffff';
@@ -60743,7 +60743,7 @@ var TextSlider = function TextSlider() {
 
 /***/ }),
 
-/***/ 1:
+/***/ 0:
 /*!********************************************************************************************************************************!*\
   !*** multi next-client-pages-loader?page=%2Ftext-slider&absolutePagePath=%2FUsers%2Fmsi%2Fhello-next%2Fpages%2Ftext-slider.js ***!
   \********************************************************************************************************************************/
@@ -60766,5 +60766,5 @@ module.exports = dll_ef0ff7c60362f24a921f;
 
 /***/ })
 
-},[[1,"static/runtime/webpack.js","styles"]]]);
+},[[0,"static/runtime/webpack.js","styles"]]]);
 //# sourceMappingURL=text-slider.js.map

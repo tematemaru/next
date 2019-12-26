@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -197,10 +197,10 @@ class SphereSlider extends react__WEBPACK_IMPORTED_MODULE_1___default.a.PureComp
 
     Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(this, "prepareTextTexture", () => {
       const canvas = document.createElement('canvas');
-      canvas.width = 100000;
-      canvas.height = 100000;
+      canvas.width = window.innerWidth * 2;
+      canvas.height = window.innerHeight * 2;
       const ctx = canvas.getContext('2d');
-      ctx.font = '1024px serif';
+      ctx.font = '170px serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#ffffff';
@@ -2168,7 +2168,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!************************************!*\
   !*** multi ./pages/text-slider.js ***!
   \************************************/
