@@ -1,63 +1,75 @@
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
+import TG from './TG.json';
+import textFragment from '../../glsl/fragment.glsl'
+import textVertex from '../../glsl/vertex.glsl';
+// import TRYGalien from './TRYGalien.woff2';
 
 export default class SphereSlider extends React.PureComponent {
   componentDidMount() {
-    this.texture = new THREE.Texture(this.prepareTextTexture());
-    console.log(this.texture);
-    // this.texture.magFilter = THREE.NearestFilter;
-    // this.texture.minFilter = THREE.NearestFilter;
-    // this.texture.minFilter = THREE.LinearMipMapLinearFilter;
-    this.texture.minFilter = THREE.LinearFilter;
-    // this.texture.anisotropy  = 1;
-    
-    this.texture.needsUpdate = true;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({ alpha: true });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
-  
-    // this.geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    // this.material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    // this.cube = new THREE.Mesh( this.geometry, this.material );
-    // this.scene.add(this.cube);
 
     this.camera.position.z = 5;
 
     this.canvas.appendChild( this.renderer.domElement );
+
+    this.color = 0xff0000;
+
+    this.material = new THREE.RawShaderMaterial({
+      uniforms: {
+          uTime: { value: 1.0 }
+      },
+      vertexShader: textVertex,
+      fragmentShader: textFragment,
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
 
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.enableDamping = true
     this.controls.dampingFactor = 0.25
     this.controls.enableZoom = true
+    this.font = new THREE.Font(TG);
 
-    this.geometry = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight)
-    this.material = new THREE.MeshBasicMaterial({
-      // color: 0xffff00,
-      side: THREE.DoubleSide,
-      map: this.texture,
-    });
-    this.plane = new THREE.Mesh( this.geometry, this.material );
-    this.scene.add(this.plane);
+    const shapes = this.font.generateShapes( 'ODDA', 100 );
+    this.geometry = new THREE.ShapeBufferGeometry( shapes );
+    this.geometry.computeBoundingBox();
+    this.xMid = - 0.5 * ( this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x );
+    this.yMid = - 0.5 * ( this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y );
+    this.geometry.translate( this.xMid, this.yMid, 0 );
+    // make shape ( N.B. edge view not visible )
+    console.log(this.geometry);
+    
+    this.text = new THREE.Mesh( this.geometry, this.material );
+    this.prepareTextGeometry('ODDA');
+    this.text.position.z = 0;
+    this.camera.position.z = 200;
+    this.scene.add( this.text );
+    
     this.animate();
   }
 
-  prepareTextTexture = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
-    const ctx = canvas.getContext('2d');
-    ctx.font = '170px serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffffff'
-    ctx.fillText('ODDA', canvas.width / 2, canvas.height / 2);
-    return canvas;
+  prepareTextGeometry = (text) => {
+    const group = new THREE.Group();
+    const glyphs = text.split('');
+    for (let i = 0; i < glyphs.length; i++) {
+      const shapes = this.font.generateShapes( glyphs[i], 100 );
+      const geometry = new THREE.ShapeBufferGeometry( shapes );
+      geometry.computeBoundingBox();
+      group.add(new THREE.Mesh(geometry, this.material));
+    };
+
+    console.log(group);
+    
   }
 
   animate = () => {
+    this.material.needsUpdate = true;
     requestAnimationFrame( this.animate );
     // this.cube.rotation.x += 0.01;
 		// this.cube.rotation.y += 0.01;
