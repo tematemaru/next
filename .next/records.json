@@ -1,0 +1,60 @@
+{
+  "mini-css-extract-plugin node_modules/@zeit/next-css/node_modules/css-loader/index.js??ref--5-1!node_modules/sass-loader/lib/loader.js??ref--5-2!styles/styles.scss": [
+    {
+      "modules": {
+        "byIdentifier": {},
+        "usedIds": {}
+      },
+      "chunks": {
+        "byName": {
+          "mini-css-extract-plugin": 0
+        },
+        "bySource": {},
+        "usedIds": [
+          0
+        ]
+      }
+    }
+  ],
+  "modules": {
+    "byIdentifier": {
+      "css node_modules/@zeit/next-css/node_modules/css-loader/index.js??ref--5-1!node_modules/sass-loader/lib/loader.js??ref--5-2!styles/styles.scss 0": 0
+    },
+    "usedIds": {
+      "0": 0
+    }
+  },
+  "chunks": {
+    "byName": {
+      "static/runtime/webpack.js": 0,
+      "commons": 1,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/_app.js": 2,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/_error.js": 3,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/about.js": 4,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/index.js": 5,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/particle-sphere.js": 6,
+      "static/R33Ux1tKISXxOsI_kfgnv/pages/text-slider.js": 7,
+      "static/runtime/main.js": 8,
+      "static/runtime/polyfills.js": 9,
+      "static/KHug83uda2M6Bdgme-mVj/pages/_app.js": 10,
+      "static/KHug83uda2M6Bdgme-mVj/pages/_error.js": 11,
+      "static/KHug83uda2M6Bdgme-mVj/pages/about.js": 12,
+      "static/KHug83uda2M6Bdgme-mVj/pages/index.js": 13,
+      "static/KHug83uda2M6Bdgme-mVj/pages/particle-sphere.js": 14,
+      "static/KHug83uda2M6Bdgme-mVj/pages/text-slider.js": 15
+    },
+    "bySource": {},
+    "usedIds": [
+      0,
+      1,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      8,
+      9
+    ]
+  }
+}

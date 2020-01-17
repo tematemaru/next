@@ -250,7 +250,6 @@ class SphereSlider extends react__WEBPACK_IMPORTED_MODULE_1___default.a.PureComp
   }
 
   componentDidMount() {
-    console.log(gsap__WEBPACK_IMPORTED_MODULE_5___default.a);
     this.mouse = {
       x: 0,
       y: 0
@@ -318,7 +317,7 @@ class SphereSlider extends react__WEBPACK_IMPORTED_MODULE_1___default.a.PureComp
       },
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 142
+        lineNumber: 140
       },
       __self: this
     });

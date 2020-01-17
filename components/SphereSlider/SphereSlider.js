@@ -5,8 +5,6 @@ import gsap from 'gsap';
 
 export default class SphereSlider extends React.PureComponent {
   componentDidMount() {
-    console.log(gsap);
-    
     this.mouse = {
       x: 0,
       y: 0,

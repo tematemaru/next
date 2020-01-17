@@ -191,7 +191,6 @@ function (_React$PureComponent) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(SphereSlider, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log(gsap__WEBPACK_IMPORTED_MODULE_11__["default"]);
       this.mouse = {
         x: 0,
         y: 0
@@ -262,7 +261,7 @@ function (_React$PureComponent) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 142
+          lineNumber: 140
         },
         __self: this
       });
