@@ -5,7 +5,7 @@ import gsap from 'gsap';
 
 export default class SphereSlider extends React.PureComponent {
   componentDidMount() {
-    // console.log(img1);
+    console.log(gsap);
     
     this.mouse = {
       x: 0,
@@ -28,6 +28,7 @@ export default class SphereSlider extends React.PureComponent {
       y: this.height / 2,
       blend: 0,
       offset: 0,
+      duration: 2.5,
     };
 
     this.container = new this.PIXI.Container();
@@ -75,6 +76,7 @@ export default class SphereSlider extends React.PureComponent {
     this.gui.add(this.config, 'offset').min(-1).max(1).step(0.001);;
     this.gui.add(this.config, 'x').min(-this.width).max(this.width * 2).step(1);
     this.gui.add(this.config, 'y').min(-this.height).max(this.height * 2).step(1);
+    this.gui.add(this.config, 'duration').min(0).max(10).step(0.5);
 
     // GUI //
   }
@@ -88,7 +90,8 @@ export default class SphereSlider extends React.PureComponent {
       {
         offset: 1,
         // blend: 1,
-        duration: 2,
+        duration: this.config.duration,
+        ease: "power2",
       }
     );
   }
@@ -102,7 +105,8 @@ export default class SphereSlider extends React.PureComponent {
       {
         offset: -1,
         // blend: 1,
-        duration: 2,
+        duration: this.config.duration,
+        ease: "power2",
       }
     );
   }

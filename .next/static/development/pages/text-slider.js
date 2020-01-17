@@ -140,7 +140,8 @@ function (_React$PureComponent) {
       }, {
         offset: 1,
         // blend: 1,
-        duration: 2
+        duration: _this.config.duration,
+        ease: "power2"
       });
     });
 
@@ -151,7 +152,8 @@ function (_React$PureComponent) {
       }, {
         offset: -1,
         // blend: 1,
-        duration: 2
+        duration: _this.config.duration,
+        ease: "power2"
       });
     });
 
@@ -189,7 +191,7 @@ function (_React$PureComponent) {
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(SphereSlider, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      // console.log(img1);
+      console.log(gsap__WEBPACK_IMPORTED_MODULE_11__["default"]);
       this.mouse = {
         x: 0,
         y: 0
@@ -209,7 +211,8 @@ function (_React$PureComponent) {
         x: this.width / 2,
         y: this.height / 2,
         blend: 0,
-        offset: 0
+        offset: 0,
+        duration: 2.5
       };
       this.container = new this.PIXI.Container();
       this.sprite = new this.PIXI.Sprite(this.PIXI.Texture.from('/1.jpg'));
@@ -245,7 +248,8 @@ function (_React$PureComponent) {
       this.gui.add(this.config, 'offset').min(-1).max(1).step(0.001);
       ;
       this.gui.add(this.config, 'x').min(-this.width).max(this.width * 2).step(1);
-      this.gui.add(this.config, 'y').min(-this.height).max(this.height * 2).step(1); // GUI //
+      this.gui.add(this.config, 'y').min(-this.height).max(this.height * 2).step(1);
+      this.gui.add(this.config, 'duration').min(0).max(10).step(0.5); // GUI //
     }
   }, {
     key: "render",
@@ -258,7 +262,7 @@ function (_React$PureComponent) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 138
+          lineNumber: 142
         },
         __self: this
       });
