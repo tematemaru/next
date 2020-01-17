@@ -1,92 +1,136 @@
-import * as THREE from 'three';
-import OrbitControls from 'three-orbitcontrols';
-import TG from './TG.json';
-import textFragment from './fragment.glsl'
+import fragmentSrc from './fragment.glsl'
 import textVertex from './vertex.glsl';
-
-// import TRYGalien from './TRYGalien.woff2';
+import { jsImageCover } from './jsImageCover';
+import gsap from 'gsap';
 
 export default class SphereSlider extends React.PureComponent {
   componentDidMount() {
+    // console.log(img1);
     
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    
-    this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
-
-    this.camera.position.z = 5;
-
-    this.canvas.appendChild( this.renderer.domElement );
-
-    this.color = 0xff0000;
-
-    this.material = new THREE.RawShaderMaterial({
-      uniforms: {
-          uTime: { value: 1.0 }
-      },
-      vertexShader: textVertex,
-      fragmentShader: textFragment,
-      side: THREE.DoubleSide,
+    this.mouse = {
+      x: 0,
+      y: 0,
+    };
+    this.PIXI = require('pixi.js');
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.app = new this.PIXI.Application({
+      width: this.width,
+      height: this.height,
       transparent: true,
-      precision: 'highp'
-      // flatShading: true,
+      autoResize: true,
+      resizeTo: window,
+      resolution: 1,
     });
 
+    this.config = {
+      x: this.width / 2,
+      y: this.height / 2,
+      blend: 0,
+      offset: 0,
+    };
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    this.controls.enableDamping = true
-    this.controls.dampingFactor = 0.25
-    this.controls.enableZoom = true
-    this.font = new THREE.Font(TG);
+    this.container = new this.PIXI.Container();
+    this.sprite = new this.PIXI.Sprite(this.PIXI.Texture.from('/1.jpg'));
+    this.sprite.anchor.set(0.5, 0.5);
+    this.sprite.x = this.config.x;
+    this.sprite.y = this.config.y;
+    this.sprite.width = jsImageCover(this.sprite, 400, 550).width;
+    this.sprite.height = jsImageCover(this.sprite, 400, 550).height;
 
-    const shapes = this.font.generateShapes( 'ODDAIP', 100 );
-    this.geometry = new THREE.ShapeBufferGeometry( shapes );
-    this.geometry.computeBoundingBox();
-    this.xMid = - 0.5 * ( this.geometry.boundingBox.max.x - this.geometry.boundingBox.min.x );
-    this.yMid = - 0.5 * ( this.geometry.boundingBox.max.y - this.geometry.boundingBox.min.y );
-    this.geometry.translate( this.xMid, this.yMid, 0 );
-    // make shape ( N.B. edge view not visible )
-    console.log(this.geometry);
+    // this.rect = new this.PIXI.Rectangle(0, 0, this.width, this.height);
+    this.graphics = new this.PIXI.Graphics();
+
+    // Rectangle
+    this.graphics.alpha = 0;
+    this.graphics.beginFill(0xDE3249);
+    this.graphics.drawRect(0, 0, this.width, this.height);
+    this.graphics.endFill();
+
+    this.container.addChild(this.graphics);
+
     
-    this.text = new THREE.Mesh( this.geometry, this.material );
-    // const s = this.prepareTextGeometry('ODDAIP');
-    this.text.position.z = 0;
-    this.camera.position.z = 200;
-    this.scene.add(this.text);
-    
+    this.container.addChild(this.sprite);
+
+    this.custumSmoothScrollFilter = new this.PIXI.Filter(null, fragmentSrc, {
+      blend:this.config.blend,
+    });
+
+    this.container.filters = [this.custumSmoothScrollFilter];
+
+    this.canvas.appendChild(this.app.view);
+
+    this.app.stage.addChild(this.container);
+
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('keydown', this.handleKeyDown);
     this.animate();
+
+    // GUI //
+  
+    this.dat = require('dat.gui');
+    this.gui = new this.dat.GUI();
+    this.gui.remember(this.config);
+    this.gui.add(this.config, 'blend').min(-1).max(1).step(0.001);;
+    this.gui.add(this.config, 'offset').min(-1).max(1).step(0.001);;
+    this.gui.add(this.config, 'x').min(-this.width).max(this.width * 2).step(1);
+    this.gui.add(this.config, 'y').min(-this.height).max(this.height * 2).step(1);
+
+    // GUI //
   }
 
-  prepareTextGeometry = (text) => {
-    const group = new THREE.Group();
-    const glyphs = text.split('');
-    let offset = 0;
-    for (let i = 0; i < glyphs.length; i++) {
-      const shapes = this.font.generateShapes( glyphs[i], 100 );
-      const geometry = new THREE.ShapeBufferGeometry( shapes );
-      geometry.computeBoundingBox();
-      const xMid = (-0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x ) + offset);
-      const yMid = - 0.5 * ( geometry.boundingBox.max.y - geometry.boundingBox.min.y );
-      offset += geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-      // console.log();
-      
-      geometry.translate( xMid, yMid, 0 );
-      group.add(new THREE.Mesh(geometry, this.material));
-    };
-    // group.computeBoundingBox();
-    console.log(group);
+  handleAnimateUp = () => {
+    gsap.fromTo(this.config,
+      {
+        offset: 0,
+        // blend: 0,
+      },
+      {
+        offset: 1,
+        // blend: 1,
+        duration: 2,
+      }
+    );
+  }
+
+  handleAnimateDown = () => {
+    gsap.fromTo(this.config,
+      {
+        offset: 0,
+        // blend: 0,
+      },
+      {
+        offset: -1,
+        // blend: 1,
+        duration: 2,
+      }
+    );
+  }
+
+  handleKeyDown = (e) => {
+    if (e.key === 'ArrowUp') {
+      this.handleAnimateUp();
+      console.log('ArrowUp');      
+    }
+    if (e.key === 'ArrowDown') {
+      this.handleAnimateDown();
+      console.log('ArrowDown');
+    }
     
-    return group;
-    
+  }
+
+  handleMouseMove = (e) => {
+    // this.rect.containse(clientX, e.clientY);
+    this.mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+	  this.mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
   }
 
   animate = () => {
-    this.material.needsUpdate = true;
+    this.sprite.x = this.config.x;
+    this.sprite.y = this.config.y;
+    this.custumSmoothScrollFilter.uniforms.blend = this.config.blend;
+    this.custumSmoothScrollFilter.uniforms.offset = this.config.offset;
     requestAnimationFrame( this.animate );
-    // this.cube.rotation.x += 0.01;
-		// this.cube.rotation.y += 0.01;
-    this.renderer.render( this.scene, this.camera );
   }
   
   render() {
